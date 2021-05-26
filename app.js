@@ -43,7 +43,8 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const TIME_OVER = 4*60*1000;
+const TIME_WARNING = 2*60*1000;
+const TIME_OVER = 3*60*1000;
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -76,9 +77,27 @@ app.use(function(err, req, res, next) {
 
 
 cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
-    console.log('running a task every two minutes');
-    console.log(new Date().getTime()-global.lastPing)
     if((new Date().getTime() - global.lastPing)>TIME_OVER){
+        try{
+            axios.get(`https://api.telegram.org/bot1816121230:AAGnPAy8M08Pljnx0QZhnlks6HUAwhodMkw/sendMessage?chat_id=-1001427236899&text=${encodeURI('Dịch vụ đọc tin nhắn đã off quá 3 phút')}`)
+                .then(function (response) {
+                    // handle success
+                    console.log(response.status);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            return
+
+        }catch (e) {
+
+        }
+    }
+    if((new Date().getTime() - global.lastPing)>TIME_WARNING){
         try{
             axios.get(`https://api.telegram.org/bot1816121230:AAGnPAy8M08Pljnx0QZhnlks6HUAwhodMkw/sendMessage?chat_id=-1001427236899&text=${encodeURI('Cảnh báo dịch vụ đọc tin nhắn')}`)
                 .then(function (response) {
