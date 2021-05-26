@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const TIME_OVER = 2*60*1000/48;
+const TIME_OVER = 2*60*1000;
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -75,7 +75,7 @@ app.use(function(err, req, res, next) {
 // });
 
 
-cron.schedule(`*/2 * * * * *`, () => {
+cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
     console.log('running a task every two minutes');
     console.log(new Date().getTime()-global.lastPing)
     if((new Date().getTime() - global.lastPing)>TIME_OVER){
