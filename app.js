@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const TIME_OVER = 2*60*1000;
+const TIME_OVER = 2*60*1000/48;
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -75,12 +75,12 @@ app.use(function(err, req, res, next) {
 // });
 
 
-cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
+cron.schedule(`*/2 * * * * *`, () => {
     console.log('running a task every two minutes');
     console.log(new Date().getTime()-global.lastPing)
     if((new Date().getTime() - global.lastPing)>TIME_OVER){
         try{
-            axios.post('https://hooks.slack.com/services/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', {text: 'Cảnh báo dịch vụ đọc tin nhắn'})
+            axios.get(`https://api.telegram.org/bot1816121230:AAGnPAy8M08Pljnx0QZhnlks6HUAwhodMkw/sendMessage?chat_id=-1001427236899&text=${encodeURI('Cảnh báo dịch vụ đọc tin nhắn')}`)
                 .then(function (response) {
                     // handle success
                     console.log(response.status);
