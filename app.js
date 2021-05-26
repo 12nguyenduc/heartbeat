@@ -80,7 +80,7 @@ cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
     console.log(new Date().getTime()-global.lastPing)
     if((new Date().getTime() - global.lastPing)>TIME_OVER){
         try{
-            axios.post('https://hooks.slack.com/services/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', {text: 'Cảnh báo dịch vụ đọc tin nhắn'})
+            axios.post('https://hooks.slack.com/services/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', {text: 'Cảnh báo dịch vụ đọc tin nhắn'})
                 .then(function (response) {
                     // handle success
                     console.log(response.status);
