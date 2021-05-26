@@ -43,7 +43,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-const TIME_OVER = 2*60*1000/16;
+const TIME_OVER = 2*60*1000;
 
 // error handler
 app.use(function(err, req, res, next) {
