@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
@@ -34,8 +33,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
 
 
 // catch 404 and forward to error handler
@@ -58,25 +55,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-// cron.schedule(`*/2 * * * * *`, () => {
-//     console.log('ping');
-//         axios.get('http://localhost:3000/')
-//             .then(function (response) {
-//                 // handle success
-//                 console.log(response.status);
-//             })
-//             .catch(function (error) {
-//                 // handle error
-//                 console.log(error);
-//             })
-//             .then(function () {
-//                 // always executed
-//             });
-//
-// });
-
-
-cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
+cron.schedule(`*/1 * * * *`, () => {
     if((new Date().getTime() - global.lastPing)>TIME_OVER){
         try{
             axios.get(`https://api.telegram.org/bot1816121230:AAGnPAy8M08Pljnx0QZhnlks6HUAwhodMkw/sendMessage?chat_id=-1001427236899&text=${encodeURI('Dịch vụ đọc tin nhắn đã off quá 3 phút')}`)
@@ -115,23 +94,22 @@ cron.schedule(`*/${TIME_OVER} * * * * *`, () => {
         }catch (e) {
 
         }
-        try {
-            var mailOptions = {
-                to: 'ictduc@gmail.com, lamvt@tima.vn, ducnv@tima.vn',
-                subject: 'Cảnh báo tin nhắn bank đang offline!',
-                text: 'Cảnh báo tin nhắn bank đang offline! Vui lòng kiểm tra lại!'
-            }
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            });
-        }catch (e) {
-
-        }
-
+        // try {
+        //     var mailOptions = {
+        //         to: 'ictduc@gmail.com, lamvt@tima.vn, ducnv@tima.vn',
+        //         subject: 'Cảnh báo tin nhắn bank đang offline!',
+        //         text: 'Cảnh báo tin nhắn bank đang offline! Vui lòng kiểm tra lại!'
+        //     }
+        //     transporter.sendMail(mailOptions, function(error, info){
+        //         if (error) {
+        //             console.log(error);
+        //         } else {
+        //             console.log('Email sent: ' + info.response);
+        //         }
+        //     });
+        // }catch (e) {
+        //
+        // }
     }
 });
 
